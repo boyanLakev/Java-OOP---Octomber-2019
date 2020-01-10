@@ -1,30 +1,27 @@
 
 
 
+import bag.Bag;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
-    private static long capacityTaken = 0;
+
 
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
         long bagCapacity = Long.parseLong(scanner.nextLine());
         String[] items = scanner.nextLine().split("\\s+");
-
-        LinkedHashMap<String, LinkedHashMap<String, Long>>
-                bag = new LinkedHashMap<String, LinkedHashMap<String, Long>>();
-        long gold = 0;
-        long gems = 0;
-        long cash = 0;
+        Bag bag=new Bag(bagCapacity);
 
 
-        bag.put("Gold", new LinkedHashMap<>());
-        bag.put("Gem", new LinkedHashMap<>());
-        bag.put("Cash", new LinkedHashMap<>());
+
+
+
 
         for (int i = 0; i < items.length; i += 2) {
             String type = items[i];
@@ -39,20 +36,19 @@ public class Main {
                 type = "Gold";
             }
 
-            if (bagCapacity >= capacityTaken + quantity) {
+            String name = items[i];
 
-                String name = items[i];
-                if (type.equals("Gem") && gold >= gems + quantity) {
-                    gems += quantity;
-                    addStolenItem(bag, type, quantity, name);
+            if (bag.getCapacity() - quantity>=0) {
+bag.addGem(name,quantity);
 
-                } else if (type.equals("Cash") && gems >= cash + quantity) {
-                    cash += quantity;
-                    addStolenItem(bag, type, quantity, name);
+                if (type.equals("Gem") ) {
+                    bag.addGem(name,quantity);
+
+                } else if (type.equals("Cash") ) {
+                    bag.addCash(name,quantity);
 
                 } else if (type.equals("Gold")) {
-                    gold += quantity;
-                    addStolenItem(bag, type, quantity, name);
+                    bag.addGold(quantity);
                 }
             }
         }
